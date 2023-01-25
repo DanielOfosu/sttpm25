@@ -1,0 +1,86 @@
+steps_to_predict: &steps 80
+# max_seq_len should be context_points + target_points
+max_seq_len: 800
+#168 context seems to be good
+context_points: 96
+target_points: *steps
+save_dir: "./runs"
+data_path: "airquality.csv"
+earlystopping: true
+# 0.25 working
+val_check_interval: 0.25
+# counts number of val checks, not training epochs
+patience: 5
+debug: false
+grad_clip_norm: true
+wandb: true
+overfit: false
+time_resolution: 1
+# 32 and 64 working
+batch_size: 32
+#original was 4
+workers: 8
+gpus: 1
+limit_val_batches: 1
+d_x: 6
+d_yc: 8
+d_yt: 8
+loss: "mae"
+# 8 worked, probs use prediction window / 3
+start_token_len: 32
+n_heads: 8
+init_lr: 0.0000000001
+base_lr: &lr 0.001
+decay_factor: 0.8
+# Increase d_model if more GPU mem available 200 and 800 tested
+d_model: 512
+d_ff: 800
+# These impact memory usage directly (e.g. going from 2 to 4 layers doubles gpu memory usage)
+e_layers: 3
+d_layers: 3
+l2_coeff: 0.001
+class_loss_imp: 0
+# try 0 and 1 "Add downsampling Conv1Ds to the encoder embedding layer to reduce context sequence length."
+initial_downsample_convs: 0
+# 8 is working, try others also
+# d_model / n_heads = d_queries_keys_values
+d_queries_keys: 48 
+d_values: 48
+#original 1000
+warmup_steps: 1000
+dropout_emb: 0.1
+dropout_ff: 0.2
+time_emb_dim: 12
+embed_method: "spatio-temporal"
+local_self_attn: "performer"
+local_cross_attn: "performer"
+global_self_attn: "performer"
+global_cross_attn: "performer"
+pos_emb_type: "t2v"
+learning_rate: *lr
+attn_factor: 5
+dropout_qkv: 0.0
+dropout_attn_out: 0.0
+dropout_attn_matrix: 0.0
+performer_kernel: "relu"
+performer_relu: true
+performer_redraw_interval: 1000
+attn_time_windows: 1
+use_shifted_time_windows: true
+activation: "gelu"
+norm: "batch"
+use_final_norm: true
+intermediate_downsample_convs: 0
+recon_loss_imp: 0
+null_value: null
+pad_value: null
+linear_window: 0
+linear_shared_weights: false
+use_revin: false
+use_seasonal_decomp: false
+recon_mask_skip_all: 1.0
+recon_mask_max_seq_len: 5
+recon_mask_drop_seq: 0.1
+recon_mask_drop_standard: 0.2
+recon_mask_drop_full: 0.05
+verbose: true
