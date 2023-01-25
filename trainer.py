@@ -1,16 +1,16 @@
 import os
 import uuid
 
+import deepspeed
 import dill as pickle
 import pytorch_lightning as pl
+import torch
+import utils
 import wandb
 from pytorch_lightning.callbacks import TQDMProgressBar
 from pytorch_lightning.strategies import DeepSpeedStrategy
-import deepspeed
-import utils
-import torch
-from pytorch_lightning.utilities.deepspeed import convert_zero_checkpoint_to_fp32_state_dict
-
+from pytorch_lightning.utilities.deepspeed import \
+    convert_zero_checkpoint_to_fp32_state_dict
 
 torch.set_float32_matmul_precision('medium')
 
@@ -59,7 +59,7 @@ if not os.path.exists(log_dir):
     os.makedirs(log_dir)
 project = "thesis"
 entity = "danielofosu"
-wandb.login(key='509e9ef2182fefb515120f40d281f74325d2eab9')
+
 experiment = wandb.init(
     project=project,
     entity=entity,
